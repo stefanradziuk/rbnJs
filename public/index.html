@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>rbn</title>
+    <link rel="stylesheet" media="screen" href="stylesheets/main.css">
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png">
+  </head>
+  <body>
+    <div id="infoButton" onclick="openInfo()">
+      [?]
+    </div>
+    <pre id="infoPopup">
+to generate a random boolean network:
+  * a truth table taking three inputs is randomly generated
+  * each node gets inputs from three randomly selected nodes
+  * each node gets assigned a randomly chosen boolean value
+  * the next value of a node is determined by looking up its input values in the truth table
+the uppermost row represents the initial state of the network - refresh this page to generate another random boolean network
+
+find out more about random boolean networks:
+* Gershenson, C., 2004. Introduction to random Boolean networks. arXiv preprint nlin/0408006.
+    (<a href="https://arxiv.org/abs/nlin/0408006">https://arxiv.org/abs/nlin/0408006</a>)
+* Random Boolean Networks - Computerphile
+    (<a href="https://www.youtube.com/watch?v=mCML2B94rUg">https://www.youtube.com/watch?v=mCML2B94rUg</a>)
+    </pre>
+    <h1>
+      random boolean networks
+    </h1>
+    <script src="../target/scala-2.13/rbnjs-fastopt/main.js" type="text/javascript"></script>
+  </body>
+</html>
