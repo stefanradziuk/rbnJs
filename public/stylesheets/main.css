@@ -68,10 +68,13 @@ td.full {
 
 a:link,
 a:visited,
-a:hover,
 a:active {
   text-decoration: none;
   color: var(--main-fg-color);
+}
+
+#infoButton:hover, a:hover {
+  text-decoration: underline;
 }
 
 ::-webkit-scrollbar {
