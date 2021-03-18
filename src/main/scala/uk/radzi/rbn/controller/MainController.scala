@@ -2,13 +2,13 @@ package uk.radzi.rbn.controller
 
 import uk.radzi.rbn.model._
 import uk.radzi.rbn.controller.MainController._
-import org.scalajs.dom
 import org.scalajs.dom.document
 import org.scalajs.dom.window
-import scala.util.Random
-import org.scalajs.dom.raw.UIEvent
 
-case class MainController(val seed: Long) {
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
+
+class MainController(val seed: Long) {
 
   println(s"Generating an rbn from seed: $seed")
 
@@ -32,16 +32,15 @@ case class MainController(val seed: Long) {
   networkTable.appendChild(tableBody)
   document.body.appendChild(networkTable)
 
-  private var reachedEnd = false
-
-  window.onscroll = (e: UIEvent) => {
+  window.onscroll = _ => {
     if (
-      !reachedEnd && (window.innerHeight + window.pageYOffset + OnScrollMargin) >= document.body.offsetHeight
+      window.innerHeight + window.pageYOffset + OnScrollMargin >= document.body.offsetHeight
     ) {
-      tableBody.innerHTML += loadMore()
+      loadMore() foreach { tableBody.innerHTML += _ }
     }
   }
 
+  // TODO implicit class for tohtml?
   private def nodeToCell(node: Node): String =
     s"""<td class="${if (node.value) "full" else "empty"}"></td>"""
 
@@ -53,26 +52,26 @@ case class MainController(val seed: Long) {
   }
 
   // Mutates!
-  private def loadMore(): String = {
-    val t0 = window.performance.now()
+  private def loadMore(): Future[String] = {
 
-    val newIterations = lastIteration
+    val newIterations = Future(getNewIterations(lastIteration))
+
+    newIterations foreach { newIterations =>
+      lastIteration = newIterations.last
+    }
+
+    newIterations map networksToHtml
+  }
+
+  private def getNewIterations(lastIteration: Network): List[Network] =
+    lastIteration
       .iterations(truthTable)
       .take(OnLoadIterations)
       .toList
-
-    lastIteration = newIterations.last
-
-    val t1 = window.performance.now()
-
-    println(t1 - t0)
-
-    networksToHtml(newIterations)
-  }
 }
 
 object MainController {
   private val InitialIterations = 100
   private val OnLoadIterations = 50
-  private val OnScrollMargin = 50
+  private val OnScrollMargin = 800
 }

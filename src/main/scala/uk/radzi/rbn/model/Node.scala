@@ -1,7 +1,6 @@
 package uk.radzi.rbn.model
 
 import Node.{falseString, trueString}
-import scala.util.Random
 
 /* defines a node with its current boolean value and the indices of nodes connected to it */
 case class Node(

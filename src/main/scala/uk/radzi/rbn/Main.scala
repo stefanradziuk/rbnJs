@@ -5,6 +5,8 @@ import scala.util.Random
 
 object Main {
 
-  def main(args: Array[String]): Unit = new MainController(Random.nextLong())
+  def main(args: Array[String]): Unit = {
+    val _ = new MainController(Random.nextLong())
+  }
 
 }

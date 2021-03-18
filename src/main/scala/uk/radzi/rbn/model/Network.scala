@@ -44,7 +44,7 @@ object Network {
     }
 
     val nodes: Seq[Node] =
-      nodeConnections map (x => Node(Random.nextBoolean(), (x._1, x._2, x._3)))
+      nodeConnections map (Node(Random.nextBoolean(), _))
 
     new Network(size, nodes)
   }
